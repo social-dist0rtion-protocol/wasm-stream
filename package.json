@@ -1,0 +1,30 @@
+{
+  "name": "wasm-stream",
+  "version": "0.0.1",
+  "description": "Live server running icecast: audio.daubenschuetz.de:8000 For SSH access provide pub key and Tim will add it to `.ssh/authorized_keys`",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "test": "ava",
+    "deploy": "rsync -avz . root@audio.daubenschuetz.de:./wasm-stream --exclude=\"node_modules\" --exclude=\".git\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/social-dist0rtion-protocol/wasm-stream.git"
+  },
+  "author": "Tim Daubenschütz <tim@daubenschuetz.de> (https://timdaub.github.io)",
+  "license": "GPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/social-dist0rtion-protocol/wasm-stream/issues"
+  },
+  "homepage": "https://github.com/social-dist0rtion-protocol/wasm-stream#readme",
+  "dependencies": {
+    "dotenv": "8.2.0",
+    "pino": "6.8.0",
+    "ws": "7.4.1"
+  },
+  "devDependencies": {
+    "ava": "3.14.0",
+    "nodemon": "2.0.6"
+  }
+}
