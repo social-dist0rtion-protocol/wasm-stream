@@ -27,7 +27,7 @@ sound it makes to everybody on the map. Like a concert.
 
 ## Architectural Overview
 
-- [icecast2 server](http://audio.daubenschuetz.de:8000)
+- [icecast2 server](http://audio.daubenschuetz.de)
 - [webcast
   server](https://github.com/webcast/webcast.js/blob/master/SPECS.md) (this
   repository)
