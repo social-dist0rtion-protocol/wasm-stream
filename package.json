@@ -4,9 +4,10 @@
   "description": "Live server running icecast: audio.daubenschuetz.de:8000 For SSH access provide pub key and Tim will add it to `.ssh/authorized_keys`",
   "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon src/server.js",
+    "dev": "NODE_ENV=development nodemon src/server.js",
     "test": "ava",
-    "deploy": "rsync -avz . root@audio.daubenschuetz.de:./wasm-stream --exclude=\"node_modules\" --exclude=\".git\""
+    "deploy": "rsync -avz . root@audio.daubenschuetz.de:./wasm-stream --exclude=\"node_modules\" --exclude=\"fullchain.pem\" --exclude=\"privkey.pem\" --exclude=\".git\"",
+    "gen:selfcert": "openssl req -x509 -newkey rsa:2048 -keyout privkey.pem -out fullchain.pem -nodes -days 365"
   },
   "repository": {
     "type": "git",

@@ -2,37 +2,50 @@
 require("dotenv").config();
 
 const WebSocket = require("ws");
-const https = require("http");
+const https = require("https");
 const fs = require("fs");
 
 const logger = require("./logger.js");
 const { createConnection } = require("./icecast.js");
 
 const {
+  NODE_ENV,
   WEBCAST_PORT,
   ICECAST_PROTOCOL,
   ICECAST_HOST,
   ICECAST_PORT,
   ICECAST_USER,
   ICECAST_PASS,
-  ICECAST_MOUNT
+  ICECAST_MOUNT,
+  CERT_PATH
 } = process.env;
 
 const STREAM = {
   PUBLIC: true,
   NAME: "WASM-STREAM",
   DESCRIPTION: "A STREAM FROM THE rc3 world",
-  URL: "https://audio.daubenschuetz.de/stream"
+  URL: "https://audio.daubenschuetz.de/stream",
+  MIME: "audio/ogg"
 };
+
+let certOptions;
+
+if (NODE_ENV === "production") {
+  certOptions = {
+    cert: `${CERT_PATH}fullchain.pem`,
+    key: `${CERT_PATH}privkey.pem`
+  };
+} else {
+  certOptions = {
+    cert: "./fullchain.pem",
+    key: "./privkey.pem"
+  };
+}
 
 // Implementation of Webcast Specification: https://github.com/webcast/webcast.js/blob/master/SPECS.md
 const server = https.createServer({
-  cert: fs.readFileSync(
-    "/etc/letsencrypt/live/audio.daubenschuetz.de/fullchain.pem"
-  ),
-  key: fs.readFileSync(
-    "/etc/letsencrypt/live/audio.daubenschuetz.de/privkey.pem"
-  )
+  cert: fs.readFileSync(certOptions.cert),
+  key: fs.readFileSync(certOptions.key)
 });
 
 const wss = new WebSocket.Server({ server });
@@ -83,7 +96,7 @@ wss.on("connection", ws => {
             ICECAST_MOUNT,
             ICECAST_USER,
             ICECAST_PASS,
-            mime,
+            STREAM.MIME,
             STREAM.PUBLIC,
             STREAM.NAME,
             STREAM.DESCRIPTION,
