@@ -89,28 +89,38 @@ wss.on("connection", ws => {
           audio: { samplerate, bitrate, channels }
         } = helloHead.data;
 
-        try {
-          conn = createConnection(
-            ICECAST_HOST,
-            ICECAST_PORT,
-            ICECAST_MOUNT,
-            ICECAST_USER,
-            ICECAST_PASS,
-            STREAM.MIME,
-            STREAM.PUBLIC,
-            STREAM.NAME,
-            STREAM.DESCRIPTION,
-            STREAM.URL,
-            bitrate,
-            samplerate,
-            channels
-          );
-        } catch (err) {
+        conn = createConnection(
+          ICECAST_HOST,
+          ICECAST_PORT,
+          ICECAST_MOUNT,
+          ICECAST_USER,
+          ICECAST_PASS,
+          STREAM.MIME,
+          STREAM.PUBLIC,
+          STREAM.NAME,
+          STREAM.DESCRIPTION,
+          STREAM.URL,
+          bitrate,
+          samplerate,
+          channels
+        );
+
+        conn.on("error", err => {
+          if (err.message.includes(`with status "403"`)) {
+            console.log("Another stream still in progress, couldn't connect");
+          }
           logger.info(
             `Creating a connection with icecast wasn't possible: "${err.toString()}"`
           );
           ws.send("error");
-        }
+          ws.close();
+        });
+
+        conn.on("close", () => {
+          logger.info("Icecast closed connection");
+          ws.send("icecast closed connection");
+          ws.close();
+        });
 
         logger.info(
           "Successfully created connection to icecast server. Sending binary."
