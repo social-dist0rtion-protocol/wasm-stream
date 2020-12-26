@@ -22,13 +22,17 @@ const STREAM = {
   PUBLIC: true,
   NAME: "WASM-STREAM",
   DESCRIPTION: "A STREAM FROM THE rc3 world",
-  URL: "https://timdaub.github.io/wasm-synth"
+  URL: "https://audio.daubenschuetz.de/stream"
 };
 
 // Implementation of Webcast Specification: https://github.com/webcast/webcast.js/blob/master/SPECS.md
 const server = https.createServer({
-  cert: fs.readFileSync('/etc/letsencrypt/live/audio.daubenschuetz.de/fullchain.pem'),
-  key: fs.readFileSync('/etc/letsencrypt/live/audio.daubenschuetz.de/privkey.pem')
+  cert: fs.readFileSync(
+    "/etc/letsencrypt/live/audio.daubenschuetz.de/fullchain.pem"
+  ),
+  key: fs.readFileSync(
+    "/etc/letsencrypt/live/audio.daubenschuetz.de/privkey.pem"
+  )
 });
 
 const wss = new WebSocket.Server({ server });
