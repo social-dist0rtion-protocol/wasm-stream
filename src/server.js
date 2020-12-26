@@ -2,7 +2,7 @@
 require("dotenv").config();
 
 const WebSocket = require("ws");
-const https = require("https");
+const http = require("http");
 const fs = require("fs");
 
 const logger = require("./logger.js");
@@ -43,10 +43,7 @@ if (NODE_ENV === "production") {
 }
 
 // Implementation of Webcast Specification: https://github.com/webcast/webcast.js/blob/master/SPECS.md
-const server = https.createServer({
-  cert: fs.readFileSync(certOptions.cert),
-  key: fs.readFileSync(certOptions.key)
-});
+const server = http.createServer({});
 
 const wss = new WebSocket.Server({ server });
 let helloFrameReceived = false;
