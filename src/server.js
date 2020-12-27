@@ -17,7 +17,8 @@ const {
   ICECAST_USER,
   ICECAST_PASS,
   ICECAST_MOUNT,
-  CERT_PATH
+  CERT_PATH,
+  ENCODING_MIME
 } = process.env;
 
 const STREAM = {
@@ -25,7 +26,7 @@ const STREAM = {
   NAME: "WASM-STREAM",
   DESCRIPTION: "A STREAM FROM THE rc3 world",
   URL: "https://audio.daubenschuetz.de/stream",
-  MIME: "audio/ogg"
+  MIME: ENCODING_MIME
 };
 
 let certOptions;
